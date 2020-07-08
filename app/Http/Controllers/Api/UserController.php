@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
 
 class UserController extends Controller
 {
@@ -52,7 +54,7 @@ class UserController extends Controller
         $user = User::create([
             "name" => request('name') ,
             "email" => request('email') ,
-            "password" => Hash::make(request('password')) ,
+            "password" => request('password') ,
         ]);
 
         $user = new UserResource($user);
@@ -104,12 +106,7 @@ class UserController extends Controller
         $user= User::find($id);
         $user->name=$request->name;
         $user->email=$request->email;
-        if ($request->new_password) {
-            $password=Hash::make($request->password);
-        }else {
-            $password=$request->old_password;
-        }
-        $user->password=$password;
+        $user->password=$request->password;
         $user->save();
 
         return response()->json([
@@ -133,5 +130,26 @@ class UserController extends Controller
         return response()->json([
             'message'   =>  'Successfully Brand deleted!!'
         ],200);
+    }
+    public function checkAuth(Request $request)
+    {
+      $email = $request->email;
+      $password = $request->password;
+      $user = DB::table('users')->where([
+                ['email', '=', $email],
+                ['password', '=', $password],
+            ])->get();
+
+      if (count($user) >0) {
+          return response()->json([
+            'user' => $user,
+            'message' => 'Login Successfully'
+          ],200);
+      } else {
+          return response()->json([
+            'user' => $user,
+            'message' => 'Invaild Email Or Password'
+          ],200);
+      }
     }
 }

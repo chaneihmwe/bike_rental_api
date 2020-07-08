@@ -25,4 +25,5 @@ Route::group(['prefix' => 'setup'], function()
 	Route::get('bike_by_category/{category_id}','Api\BikeController@getBikeByCategory');
 	Route::resource('rent','Api\RentController');
 	Route::resource('user','Api\UserController');
+	Route::post('check_auth','Api\UserController@checkAuth')->name('check_auth');
 });
