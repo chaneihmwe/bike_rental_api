@@ -54,7 +54,7 @@ class UserController extends Controller
         $user = User::create([
             "name" => request('name') ,
             "email" => request('email') ,
-            "password" => request('password') ,
+            "password" => md5(request('password')) ,
         ]);
 
         $user = new UserResource($user);
@@ -106,7 +106,12 @@ class UserController extends Controller
         $user= User::find($id);
         $user->name=$request->name;
         $user->email=$request->email;
-        $user->password=$request->password;
+        if ($request->new_password) {
+            $password = md5($request->new_password);
+        }else {
+            $password = $request->old_password;
+        }
+        $user->password=$password;
         $user->save();
 
         return response()->json([
@@ -134,7 +139,7 @@ class UserController extends Controller
     public function checkAuth(Request $request)
     {
       $email = $request->email;
-      $password = $request->password;
+      $password = md5($request->password);
       $user = DB::table('users')->where([
                 ['email', '=', $email],
                 ['password', '=', $password],
