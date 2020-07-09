@@ -138,6 +138,7 @@ class UserController extends Controller
     }
     public function checkAuth(Request $request)
     {
+        //Check Auth
       $email = $request->email;
       $password = md5($request->password);
       $user = DB::table('users')->where([
