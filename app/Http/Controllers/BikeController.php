@@ -25,7 +25,8 @@ class BikeController extends Controller
     public function create()
     {   
         $categories = Category::all();
-        return view('backend.bike.create', compact('categories'));
+        $owners = Category::all();
+        return view('backend.bike.create', compact('categories','owners'));
     }
 
     /**
@@ -146,3 +147,6 @@ class BikeController extends Controller
         return redirect()->route('admin.bike.index')->with('status','Car was successfully deleted!!');
     }
 }
+
+    /*
+    eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGViZjhhNzNmMjc0NGJkNGExMTMzMDQ0OTRiMDZmNGYxNGNiY2M4OGFiMTIzOWY2NDE3NTA4NjZlM2U3MTEzYTMwOTVkY2YwNzJhNDdlZWMiLCJpYXQiOjE1OTQ1NDY5OTYsIm5iZiI6MTU5NDU0Njk5NiwiZXhwIjoxNjI2MDgyOTk2LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.nynREC8jDNHDcTvgkpXjRau2bIQ_vrFgSwZ2a1E6OalsSuQFociiO6kAbVyDQdlhGQHiXktmLflUN9LDR38In02dvEyPNBoHssOEQHnGmIiCki-JzLx8PwB8KmrVohzv4K9jv6aiZwRb5tW0vgiIGLsooNT0gSHk33ppel46Eyzk3cfGxtTBWnLsyVoAaxqh5i61Uvie5a41gb4wkH2KiqWGv8rt9pRwdN7Qe_Ip7zTW9HcT-DPa58UyhgJj_-_01732w3ZDbDiiistI-DDOu4E335NHft1pGIAdci4WaPK4sC-RohBSfqmUhFGRzD50mXf1TMZfJY3MfhDQ7y37o6m-zU2uAYHcruUYs9cCEKFO219bna4rFjQhpwyLZQv0ACQPSAoV1MNwuju73YIytD23EyZdTIlNgbmEHTpSvzHMB0gKQ-0AMixe6pKsK73ymudkgyT5FpYjbCWG5XA8RiKthvjMps0iQLUlkoI8s6Afwa_RdZnEuu-ICI_IwC1Cxrdg4q6d9jUnG90gL8-fzCuiDX-Dgm66MDM9DQ9bsv5ycSaowC7WHYCOHYGugicfpFLzsYOSSetlfAtDcC7usA0bS1WjRihb0VBt6QnxQVxuy9lZ0lori8uS0GHxGW9mvlJUpckOFwAVFHxjzzKMKs-uoegIjCPJUN9ptnnlu0Q*/

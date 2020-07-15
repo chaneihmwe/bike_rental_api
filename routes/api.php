@@ -19,9 +19,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::group(['prefix' => 'setup'], function()
 {
-	Route::resource('category','Api\CategoryController');
+    Route::post('login', 'Api\AuthController@login');
+    Route::post('signup', 'Api\AuthController@signup');
+  
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::get('logout', 'Api\AuthController@logout');
+        Route::get('user', 'Api\AuthController@user');
+        Route::resource('category','Api\CategoryController');
+    });
+
 	Route::resource('brand','Api\BrandController');
-	Route::resource('bike','Api\BikeController');
+    Route::resource('bike','Api\BikeController');
+	Route::resource('bicycle','Api\BicycleController');
 	Route::get('bike_by_category/{category_id}','Api\BikeController@getBikeByCategory');
 	Route::resource('rent','Api\RentController');
 	Route::resource('user','Api\UserController');

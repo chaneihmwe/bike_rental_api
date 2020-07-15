@@ -24,6 +24,7 @@ class CreateBikesTable extends Migration
             $table->string('price', 10);
             $table->string('description', 255);
             $table->boolean('status')->default(false);
+            $table->boolean('available')->default(false);
             $table->timestamps();
 
             $table->foreign('brand_id')

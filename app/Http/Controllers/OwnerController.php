@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Rent;
-use App\Bike;
 use App\User;
-use App\Http\Resources\RentResource;
+use App\Http\Resources\CustomerResource;
 
-class RentController extends Controller
+class OwnerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,10 +17,9 @@ class RentController extends Controller
     public function index()
     {
         //
-        $rents = Rent::all();
-        $rents =  RentResource::collection($rents);
+        $owner =  OwnerResource::collection($owner);
         return response()->json([
-            'rents' => $rents,
+            'owner' => $owner,
         ],200);
     }
 
@@ -46,37 +43,23 @@ class RentController extends Controller
     {
         //
          $request->validate([
-            "bike_id" => 'required',
-            "name" => 'required',
-            "phone_no" => 'required',
-            "address" => 'required',
-            "start_date" => 'required | min:6',
-            "end_date" => 'required | min:3',
-            "total_day" => 'required',
-            "total_price" => 'required | min:3',
+            "name"=> 'required|min:4',                      
+            "email"=> 'required|min:5|unique:users',                      
+            "passwrod"=> 'required|min:5',
         ]);
 
-        $user = new User;
-        $user->name = request('name');
-        $user->phone_no = request('phone_no');
-        $user->address = request('address');
-        $user->role = 'customer';
-        $user->save();
-        //store data 
-        $rend = new Rent;
-        $rend->bike_id = request('bike_id');
-        $rend->user_id = $user->id;
-        $rend->start_date = request('start_date');
-        $rend->end_date = request('end_date');
-        $rend->total_day = request('total_day');
-        $rend->total_price = request('total_price');
-        $rend->save();
+        $customer=new User;
+        $customer->name =request('name');              
+        $customer->email =request('email');              
+        $customer->address =request('address');              
+        $customer->role = 'customer';              
+        $customer->save();
 
-       
+        $customer = new CustomerResource($customer);
 
         return response()->json([
-            'rent'  =>  $rend,
-            'message'   =>  'Successfully Rent Added!',
+            'customer'  =>  $customer,
+            'message'   =>  'Successfully Customer Added!'
         ],200);
     }
 
@@ -111,18 +94,23 @@ class RentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rent = Rent::find($id);
-        $rent->status = 1;
-        $rent->save();
-
-        $id = $rent->bike_id;
-        $bike = Bike::find($id);
-        $bike->available = 1;
-        $bike->save();
+        //
+        //echo "$request";die();
+        $request->validate([
+            "name"=> 'required|min:4',                      
+            "phone_no"=> 'required|min:5',                      
+            "address"=> 'required|min:5', 
+        ]);
+        
+        $customer=User::find($id);
+        $customer->name =request('name');              
+        $customer->phone_no =request('phone_no');              
+        $customer->address =request('address');        
+        $customer->role ='customer';        
+        $customer->save();
 
         return response()->json([
-            'message'   =>  'Successfully Rent status comfirmed!!',
-            'messageTwo'   =>  'Successfully Bike status changed!!'
+            'message'   =>  'Successfully Customer updated!!'
         ],200);
         
     }
@@ -136,11 +124,11 @@ class RentController extends Controller
     public function destroy($id)
     {
         //
-        $rent = Rent::find($id);
-        $rent->delete();
-        
+        $customer = User::find($id);
+        $customer->delete();
+
         return response()->json([
-            'message'   =>  'Successfully Rent deleted!!'
+            'message'   =>  'Successfully Customer deleted!!'
         ],200);
     }
 }

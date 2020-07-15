@@ -21,6 +21,7 @@ class CreateRentsTable extends Migration
             $table->date('end_date');
             $table->unsignedBigInteger('total_day');
             $table->unsignedBigInteger('total_price',);
+            $table->boolean('status')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')

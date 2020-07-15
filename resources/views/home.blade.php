@@ -4,6 +4,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            
+        @if (session('status'))
+          <div class="alert alert-success col-md-6 offset-3">
+              {{ session('status') }}
+          </div>
+        @endif
             <div class="card">
                 <div class="card-header">Dashboard</div>
 

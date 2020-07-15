@@ -8,7 +8,7 @@ use App\Bike;
 use App\Http\Resources\BikeResource;
 use Illuminate\Support\Facades\DB;
 
-class BikeController extends Controller
+class BicycleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +18,15 @@ class BikeController extends Controller
     public function index()
     {
         //
-        $bikes = DB::table('bikes')
+        $bicycles = DB::table('bikes')
             ->join('brands', 'brands.id', '=', 'bikes.brand_id')
             ->join('categories', 'categories.id', '=', 'brands.category_id')
-            ->where('category_id', '=', 1)
+            ->where('category_id', '=', 2)
             ->select('bikes.*')
             ->get();
-        $bikes =  BikeResource::collection($bikes);
+        $bicycles =  BikeResource::collection($bicycles);
         return response()->json([
-            'bikes' => $bikes,
+            'bicycles' => $bicycles,
         ],200);
     }
 
